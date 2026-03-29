@@ -84,6 +84,67 @@ In interviews, we almost always talk about **Big-O** (worst-case).
 - n ≤ 10⁸ → O(n) is needed
 - n > 10⁸ → O(log n) or O(1) is needed
 
+### Constraints Trick — Read n, Know the Algorithm
+
+**The single most powerful trick in interviews and contests:** read the input constraints, determine the maximum allowed time complexity, and immediately narrow down which algorithms/patterns are viable.
+
+**A modern CPU does ~10⁸ simple operations/second.** Most judges allow 1-2 seconds. So your total operations should stay under ~10⁸.
+
+| Constraint (n) | Max Complexity | Algorithms / Patterns to Consider |
+|---|---|---|
+| n ≤ 10 | O(n!) or O(n · 2ⁿ) | Brute force, permutations, backtracking without pruning |
+| n ≤ 15-20 | O(2ⁿ) or O(n² · 2ⁿ) | Bitmask DP, bitmask enumeration, meet-in-the-middle |
+| n ≤ 25 | O(2^(n/2)) | Meet-in-the-middle (split into two halves, combine) |
+| n ≤ 100 | O(n³) or O(n² · log n) | Floyd-Warshall, interval DP, matrix chain |
+| n ≤ 400-500 | O(n³) | Floyd-Warshall, cubic DP |
+| n ≤ 5,000 | O(n²) | Nested loops, 2D DP (LCS, edit distance), bubble/selection sort |
+| n ≤ 10⁵ | O(n log n) | Sorting + greedy, merge sort, binary search on answer, segment tree, BIT |
+| n ≤ 10⁶ | O(n) or O(n log n) | Two pointers, sliding window, prefix sum, Kadane's, linear DP, monotonic stack, KMP, topological sort, BFS/DFS |
+| n ≤ 10⁷ | O(n) | Sieve of Eratosthenes, linear scan, counting sort |
+| n ≤ 10⁸ | O(n) barely | Only simple linear passes (increment/compare), avoid heavy constant factors |
+| n ≤ 10⁹ | O(√n) or O(log n) | Binary search, math formula, sqrt decomposition |
+| n ≤ 10¹⁸ | O(log n) | Binary search on answer, fast exponentiation, matrix exponentiation, digit DP |
+
+**How to use this in an interview:**
+
+```
+1. Read the constraint:  "1 ≤ n ≤ 10⁵"
+2. Look up the table:    n = 10⁵ → need O(n log n) or better
+3. Eliminate approaches:  O(n²) is too slow → nested loops won't work
+4. Choose pattern:        Sort + two pointers, binary search, or segment tree
+```
+
+**Constraints on multiple variables:**
+
+| Constraint | Implication |
+|---|---|
+| n ≤ 10⁵, m ≤ 10⁵ | O(n + m) or O((n + m) log n) — think graph BFS/DFS |
+| n ≤ 10³, m ≤ 10³ | O(n · m) is fine — think 2D DP grid |
+| n ≤ 10⁵, k ≤ 10 | O(n · k) or O(n · 2^k) — small k hints at bitmask or per-k iteration |
+| n ≤ 10⁵, values ≤ 10⁶ | Counting sort / bucket sort / frequency array viable |
+| String length ≤ 10⁵ | KMP, Z-algorithm, rolling hash; NOT brute force O(n²) matching |
+
+**Red flags from constraints:**
+- `n ≤ 20` → almost certainly bitmask DP or brute force with pruning.
+- `n ≤ 10⁵` with "subarray" → sliding window or prefix sum (NOT nested loops).
+- `n ≤ 10⁹` or `10¹⁸` → you need a math formula, binary search on answer, or O(log n) approach. Don't even think about iterating over n.
+- Two arrays of size n and m → think about which one to iterate vs binary search on.
+- "Return all..." with n ≤ 15 → generate all subsets (2ⁿ) or permutations (n!).
+- "Minimum cost / maximum value" with n ≤ 5000 → likely DP.
+- "Connected / reachable" → graph traversal (BFS/DFS).
+- "Sorted input" → binary search or two pointers.
+
+**Quick mental math for operations count:**
+
+| n | n² | n log n | 2ⁿ |
+|---|---|---|---|
+| 10 | 100 | ~33 | 1,024 |
+| 100 | 10,000 | ~664 | 10³⁰ (impossible) |
+| 1,000 | 10⁶ | ~10,000 | impossible |
+| 10,000 | 10⁸ (borderline) | ~133,000 | impossible |
+| 100,000 | 10¹⁰ (TLE) | ~1.7 × 10⁶ | impossible |
+| 1,000,000 | 10¹² (TLE) | ~2 × 10⁷ | impossible |
+
 ### How to Analyze
 
 ```java
