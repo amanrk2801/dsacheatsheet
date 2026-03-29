@@ -5065,6 +5065,3 @@ Curated list of 50 classic problems covering every pattern. Check them off as yo
 ## License
 
 This cheatsheet is free to use for learning purposes. Star the repo if you found it useful!
-#   d s a c h e a t s h e e t 
- 
- 
